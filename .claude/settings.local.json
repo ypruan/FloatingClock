@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(java -version)",
+      "Bash(echo $ANDROID_HOME)",
+      "Read(//Users/ruanyuping/git_resources/tools/screen_time/**)",
+      "Read(//usr/libexec/**)",
+      "Bash(/usr/libexec/java_home -V)",
+      "Read(//Users/ruanyuping/Library/Android/**)",
+      "Read(//Users/**)"
+    ]
+  }
+}

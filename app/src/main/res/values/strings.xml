@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">悬浮时钟</string>
+    <string name="start_floating">启动悬浮时钟</string>
+    <string name="stop_floating">停止悬浮时钟</string>
+    <string name="current_time">当前时间</string>
+    <string name="countdown">倒计时</string>
+    <string name="sound">提示音</string>
+    <string name="vibrate">震动</string>
+    <string name="settings">设置</string>
+</resources>
