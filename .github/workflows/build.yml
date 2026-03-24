@@ -27,9 +27,15 @@ jobs:
     - name: Build APK
       run: ./gradlew assembleDebug
 
+    - name: Check APK exists
+      run: |
+        ls -la app/build/outputs/apk/debug/
+        test -f app/build/outputs/apk/debug/app-debug.apk && echo "APK exists" || echo "APK not found"
+
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: app/build/outputs/apk/debug/*.apk
         retention-days: 30
+        if-no-files-found: warn
