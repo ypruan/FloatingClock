@@ -24,43 +24,51 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
     - name: Make Gradle wrapper executable
       run: chmod +x gradlew
 
-    - name: Show directory structure
+    - name: Show environment
       run: |
-        echo "=== Project structure ==="
-        ls -la
+        echo "=== Java version ==="
+        java -version
         echo ""
-        echo "=== App directory ==="
-        ls -la app/
-        echo ""
-        echo "=== App src directory ==="
-        ls -la app/src/main/
+        echo "=== ANDROID_HOME ==="
+        echo $ANDROID_HOME
+        ls -la $ANDROID_HOME
 
-    - name: Build with Gradle (full output)
+    - name: Build with Gradle
       run: |
-        echo "=== Running Gradle build ==="
-        ./gradlew clean assembleDebug --no-daemon --stacktrace
-        BUILD_EXIT=$?
-        echo "=== Build exit code: $BUILD_EXIT ==="
-        if [ $BUILD_EXIT -ne 0 ]; then
-          echo "Build failed!"
+        echo "=== Starting build ==="
+        ./gradlew clean assembleDebug --no-daemon --stacktrace --console=plain
+        EXIT_CODE=$?
+        echo "=== Build exit code: $EXIT_CODE ==="
+        if [ $EXIT_CODE -ne 0 ]; then
+          echo "BUILD FAILED with exit code $EXIT_CODE"
           exit 1
         fi
+        echo "Build completed"
 
-    - name: Verify build outputs
+    - name: Check build output directory
       run: |
-        echo "=== Build directory contents ==="
-        ls -la app/build/ 2>/dev/null || echo "No build directory"
-        echo ""
-        echo "=== Outputs directory ==="
-        ls -laR app/build/outputs/ 2>/dev/null || echo "No outputs directory"
+        echo "=== Checking app/build ==="
+        if [ -d "app/build" ]; then
+          echo "app/build EXISTS"
+          ls -la app/build/
+          echo ""
+          echo "=== Checking outputs ==="
+          find app/build/outputs -type f 2>/dev/null || echo "No outputs found"
+        else
+          echo "app/build directory DOES NOT EXIST!"
+          echo "This means the build did not complete!"
+          exit 1
+        fi
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
-        path: app/build/outputs/apk/debug/*.apk
+        path: app/build/outputs/apk/debug/
         retention-days: 30
-        if-no-files-found: error
