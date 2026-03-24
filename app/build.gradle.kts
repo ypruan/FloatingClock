@@ -37,4 +37,5 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.3")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.cardview:cardview:1.0.0")
 }

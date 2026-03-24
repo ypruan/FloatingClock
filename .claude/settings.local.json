@@ -7,7 +7,12 @@
       "Read(//usr/libexec/**)",
       "Bash(/usr/libexec/java_home -V)",
       "Read(//Users/ruanyuping/Library/Android/**)",
-      "Read(//Users/**)"
+      "Read(//Users/**)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(curl -s \"https://api.github.com/repos/ypruan/FloatingClock/actions/runs?per_page=3\")",
+      "Bash(curl -s \"https://api.github.com/repos/ypruan/FloatingClock/actions/runs/23467915302/jobs\")"
     ]
   }
 }
