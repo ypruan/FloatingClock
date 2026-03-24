@@ -24,8 +24,13 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v3
+      with:
+        gradle-version: wrapper
+
     - name: Build APK
-      run: ./gradlew assembleDebug
+      run: ./gradlew clean assembleDebug --stacktrace
 
     - name: Check APK exists
       run: |

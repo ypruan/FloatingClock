@@ -12,7 +12,8 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(curl -s \"https://api.github.com/repos/ypruan/FloatingClock/actions/runs?per_page=3\")",
-      "Bash(curl -s \"https://api.github.com/repos/ypruan/FloatingClock/actions/runs/23467915302/jobs\")"
+      "Bash(curl -s \"https://api.github.com/repos/ypruan/FloatingClock/actions/runs/23467915302/jobs\")",
+      "Bash(curl -s \"https://api.github.com/repos/ypruan/FloatingClock/actions/runs/23468737342/jobs\")"
     ]
   }
 }
