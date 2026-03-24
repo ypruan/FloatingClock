@@ -27,17 +27,32 @@ jobs:
     - name: Make Gradle wrapper executable
       run: chmod +x gradlew
 
+    - name: Show Gradle version
+      run: ./gradlew --version
+
     - name: Build with Gradle
       run: |
-        ./gradlew clean assembleDebug --no-daemon --info 2>&1 | tail -100
+        ./gradlew clean assembleDebug --no-daemon --info 2>&1 | tee gradle-output.log
+        echo "=== Gradle Exit Code: $? ==="
 
-    - name: List build outputs
-      run: find app/build -name "*.apk" -type f 2>/dev/null || echo "No APK found"
+    - name: Show all build outputs
+      run: |
+        echo "=== Contents of app/build ==="
+        find app/build -type f -name "*.apk" 2>/dev/null
+        ls -la app/build/outputs/ 2>/dev/null || echo "No outputs directory"
+        ls -la app/build/outputs/apk/ 2>/dev/null || echo "No apk directory"
+        ls -la app/build/outputs/apk/debug/ 2>/dev/null || echo "No debug directory"
+
+    - name: Show gradle output log
+      if: success() || failure()
+      run: |
+        echo "=== Last 50 lines of Gradle output ==="
+        tail -50 gradle-output.log
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       if: success()
       with:
         name: app-debug
-        path: app/build/outputs/apk/debug/
+        path: app/build/outputs/apk/debug/*.apk
         retention-days: 30
