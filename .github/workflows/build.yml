@@ -27,32 +27,40 @@ jobs:
     - name: Make Gradle wrapper executable
       run: chmod +x gradlew
 
-    - name: Show Gradle version
-      run: ./gradlew --version
-
-    - name: Build with Gradle
+    - name: Show directory structure
       run: |
-        ./gradlew clean assembleDebug --no-daemon --info 2>&1 | tee gradle-output.log
-        echo "=== Gradle Exit Code: $? ==="
+        echo "=== Project structure ==="
+        ls -la
+        echo ""
+        echo "=== App directory ==="
+        ls -la app/
+        echo ""
+        echo "=== App src directory ==="
+        ls -la app/src/main/
 
-    - name: Show all build outputs
+    - name: Build with Gradle (full output)
       run: |
-        echo "=== Contents of app/build ==="
-        find app/build -type f -name "*.apk" 2>/dev/null
-        ls -la app/build/outputs/ 2>/dev/null || echo "No outputs directory"
-        ls -la app/build/outputs/apk/ 2>/dev/null || echo "No apk directory"
-        ls -la app/build/outputs/apk/debug/ 2>/dev/null || echo "No debug directory"
+        echo "=== Running Gradle build ==="
+        ./gradlew clean assembleDebug --no-daemon --stacktrace
+        BUILD_EXIT=$?
+        echo "=== Build exit code: $BUILD_EXIT ==="
+        if [ $BUILD_EXIT -ne 0 ]; then
+          echo "Build failed!"
+          exit 1
+        fi
 
-    - name: Show gradle output log
-      if: success() || failure()
+    - name: Verify build outputs
       run: |
-        echo "=== Last 50 lines of Gradle output ==="
-        tail -50 gradle-output.log
+        echo "=== Build directory contents ==="
+        ls -la app/build/ 2>/dev/null || echo "No build directory"
+        echo ""
+        echo "=== Outputs directory ==="
+        ls -laR app/build/outputs/ 2>/dev/null || echo "No outputs directory"
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
-      if: success()
       with:
         name: app-debug
         path: app/build/outputs/apk/debug/*.apk
         retention-days: 30
+        if-no-files-found: error
