@@ -55,7 +55,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/yourusername/FloatingClock.git
+git clone https://github.com/ypruan/FloatingClock.git
 cd FloatingClock
 
 # 使用 Gradle 编译
@@ -72,13 +72,6 @@ cd FloatingClock
 ## 🤝 贡献
 
 欢迎提交 Issue 和 Pull Request！
-
-## 💬 联系方式
-
-如有问题或建议，请通过以下方式联系：
-
-- 提交 [GitHub Issue](../../issues)
-- 发送邮件至: your-email@example.com
 
 ---
 
